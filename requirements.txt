@@ -1,0 +1,26 @@
+Authentication APIs
+POST /api/auth/signup: Register new user.
+POST /api/auth/login: Authenticate user.
+
+
+User APIs
+GET /api/users/{id}: Get user profile.
+PUT /api/users/{id}: Update user profile.
+
+
+Post APIs
+POST /api/posts: Create a new post.
+GET /api/posts: Get all posts.
+GET /api/posts/{id}: Get a single post.
+PUT /api/posts/{id}: Update a post.
+DELETE /api/posts/{id}: Delete a post.
+GET /api/posts/search: Search posts by filters.
+
+
+Messaging APIs
+POST /api/messages: Send a new message.
+GET /api/messages/{userId}: Get messages for a user.
+
+
+Notification APIs
+GET /api/notifications/{userId}: Get notifications for a user.

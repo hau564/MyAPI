@@ -1,0 +1,24 @@
+
+### SIGN UP
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+  "email": "thanhhau050604@gmail.com",
+  "password": "123456",
+  "name": "Cao Thanh Hậu"
+}
+
+### LOGIN
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "thanhhau050604@gmail.com",
+  "password": "123456"
+}
+
+### GET PROFILE
+GET http://localhost:3000/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2Njk3NWY1MDY1ZDNkYzc2MWY1ZWI4MzQiLCJpYXQiOjE3MjExOTY0MDB9.TH27pObUyqyd3lmu9y6TPDUg3lfVisBWFRLPPpEUo0U
+
