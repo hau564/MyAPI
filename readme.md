@@ -19,10 +19,11 @@ In cmd:
 
 ### Set up
 
-* Clone project from github
-* Open cmd in project's directory
-* In cmd: ```npm install```
-* Setup .env file
+* Clone project from github.
+* Open cmd in project's directory.
+* In cmd: ```npm install```.
+* Setup .env file.
+* Open mongodb.com, add your IP to connect to the database.
 
 ### Run
 * In cmd: 
