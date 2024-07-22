@@ -11,10 +11,25 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    isVerified: {
+        type: Boolean,
+        default: false 
+    },
     name: {
         type: String,
+    },
+    age: {
+        type: Number,
+    },
+    phone: {
+        type: String,
+    },
+    description: {
+        type: String,
+    },
+    interests: {
+        type: [String],
     }
-    
 });
 
 userSchema.pre('save', async function (next) {
@@ -28,6 +43,25 @@ userSchema.pre('save', async function (next) {
 
 userSchema.methods.matchPassword = async function (enteredPassword) {
     return await bcrypt.compare(enteredPassword, this.password);
+};
+
+userSchema.methods.publicView = function () {
+    const user = this.toObject();
+    delete user.password;
+    delete user.__v;
+    delete user.email;
+    user.id = user._id;
+    delete user._id;
+    return user;
+};
+
+userSchema.methods.privateView = function () {
+    const user = this.toObject();
+    delete user.password;
+    delete user.__v;
+    user.id = user._id;
+    delete user._id;
+    return user;
 };
 
 module.exports = mongoose.model('User', userSchema);
