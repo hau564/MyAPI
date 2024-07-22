@@ -17,10 +17,14 @@ In cmd:
 
 ## Run 
 
+### Set up
+
 * Clone project from github
 * Open cmd in project's directory
 * In cmd: ```npm install```
 * Setup .env file
+
+### Run
 * In cmd: 
 ```npm run dev```
 
@@ -29,6 +33,7 @@ In cmd:
 
 To test:
 * Open project folder in vscode.
+* Run.
 * Instal ```REST Client``` extension.
 * Follow the examples in test.rest.
 
