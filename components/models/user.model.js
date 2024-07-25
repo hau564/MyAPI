@@ -29,6 +29,9 @@ const userSchema = new mongoose.Schema({
     },
     interests: {
         type: [String],
+    },
+    avatarUrl: {
+        type: String,
     }
 });
 
@@ -63,5 +66,24 @@ userSchema.methods.privateView = function () {
     delete user._id;
     return user;
 };
+
+userSchema.methods.updatableView = function () {
+    const user = this.toObject();
+    delete user.password;
+    delete user.__v;
+    delete user._id;
+    delete user.isVerified;
+    delete user.email;
+    return user;
+};
+
+userSchema.methods.update = function (data) {
+    const updateFields = ['name', 'age', 'phone', 'description', 'interests'];
+    for (let key in data) {
+        if (updateFields.includes(key)) {
+            this[key] = data[key];
+        }
+    }
+}
 
 module.exports = mongoose.model('User', userSchema);

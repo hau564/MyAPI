@@ -1,4 +1,5 @@
 
+
 ### SIGN UP
 POST http://localhost:3000/auth/register
 Content-Type: application/json
@@ -26,18 +27,29 @@ Content-Type: application/json
 
 ### GET PROFILE
 GET http://localhost:3000/auth/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljOWU3YWYyYWY0MDY0M2ZjYTZlYTIiLCJpYXQiOjE3MjE1NDAyNDB9.gT5lGJjORJdAivemmVehEbk3EZHabwkT7bU5GQPYE9I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
 
 ### UPDATE PROFILE
 PUT http://localhost:3000/auth/profile
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljOWU3YWYyYWY0MDY0M2ZjYTZlYTIiLCJpYXQiOjE3MjE1NDAyNDB9.gT5lGJjORJdAivemmVehEbk3EZHabwkT7bU5GQPYE9I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
   
 {
+  "isVerified": false,
   "name": "Hậu",
-  "phone": "012",
+  "phone": "012345",
   "interests": ["chess"]
 }
 
+### UPDATE AVATAR
+PUT http://localhost:3000/auth/profile/avatar
+Content-Type: multipart/form-data
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
+
+
+
+
+
 ### GET PUBLIC PROFILE
 GET http://localhost:3000/users/669cf99daa753eb21a3a9e28
+
