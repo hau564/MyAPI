@@ -17,4 +17,12 @@ const sendConfirmationEmail = (email, token) => {
   });
 };
 
-module.exports = { sendConfirmationEmail };
+const sendResetPasswordEmail = (email, password) => {
+  transporter.sendMail({
+    to: email,
+    subject: 'Reset Password',
+    html: `Your new password is: ${password}\nPlease change it after login`,
+  });
+};
+
+module.exports = { sendConfirmationEmail, sendResetPasswordEmail };

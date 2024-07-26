@@ -17,5 +17,8 @@ app.use('/auth', authRoute);
 const userRoute = require('./components/user/user.route.js');
 app.use('/users', userRoute);
 
+const messageRoute = require('./components/message/message.route.js');
+app.use('/messages', messageRoute);
+
 app.listen(process.env.PORT, '0.0.0.0', () => console.log('Server is running on port ' + process.env.PORT));
 

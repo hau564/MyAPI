@@ -3,19 +3,21 @@ const router = express.Router();
 
 const upload = require('../services/multer.js');
 const { authenticate } = require('../services/authenticate.service.js');
-const { register, login, confirm, update, updateAvatar } = require('./auth.controller.js');
+const authController = require('./auth.controller.js');
 
 
-router.post('/register', register);
-router.post('/login', login);
-router.get('/confirm/:token', confirm);
+router.post('/signup', authController.register);
+router.post('/login', authController.login);
+router.get('/confirm/:token', authController.confirm);
 
 router.get('/profile', authenticate, (req, res) => {
     res.json(req.user.privateView());
 });
 
-router.put('/profile', authenticate, update);
-router.put('/profile/avatar', authenticate, upload.single('avatar'), updateAvatar);
+router.put('/profile', authenticate, authController.update);
+router.put('/profile/avatar', authenticate, upload.single('avatar'), authController.updateAvatar);
 
+router.post('/forgot-password', authController.forgotPassword)
+router.post('/reset-password/', authenticate, authController.resetPassword)
 
 module.exports = router;

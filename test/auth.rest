@@ -1,11 +1,11 @@
 
 
 ### SIGN UP
-POST http://localhost:3000/auth/register
+POST http://localhost:3000/auth/signup
 Content-Type: application/json
 
 {
-  "email": "caynhat05062004@gmail.com",
+  "email": "spotted.vietnam@gmail.com",
   "password": "123456",
   "name": "Hậu"
 }
@@ -21,8 +21,26 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "caynhat05062004@gmail.com",
+  "email": "spotted.vietnam@gmail.com",
   "password": "123456"
+}
+
+### RESET PASSWORD
+POST http://localhost:3000/auth/reset-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE5ODg1NTl9.hHPQTioqRI0_uG8FIH7u6Plxa9qpTrDUbwypqO_Mzuk
+
+{
+  "oldPassword": "123456",
+  "newPassword": "123456"
+}
+
+### FORGOT PASSWORD
+POST http://localhost:3000/auth/forgot-password
+Content-Type: application/json
+
+{
+  "email": "caynhat05062004@gmail.com"
 }
 
 ### GET PROFILE
@@ -36,7 +54,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
   
 {
   "isVerified": false,
-  "name": "Hậu",
+  "name": "Hehe",
   "phone": "012345",
   "interests": ["chess"]
 }
@@ -51,5 +69,5 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
 
 
 ### GET PUBLIC PROFILE
-GET http://localhost:3000/users/669cf99daa753eb21a3a9e28
+GET http://localhost:3000/users/66a39662a7e21e8958e46f3e
 

@@ -1,7 +1,7 @@
 const User = require('../models/user.model');
 // auth key
 const jwt = require('jsonwebtoken');
-const { sendConfirmationEmail } = require('../services/email.service.js');
+const { sendConfirmationEmail, sendResetPasswordEmail } = require('../services/email.service.js');
 
 const register = async (req, res) => {
     try {
@@ -116,12 +116,50 @@ const updateAvatar = async (req, res) => {
       }
 };
 
+const forgotPassword = async (req, res) => {
+    try {
+        console.log("Forgot password: ", req.body);
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({msg: 'User not found'});
+        }
 
+        const newPassword = Math.random().toString(36).slice(-8);
+        user.password = newPassword;
+        await user.save();
+        sendResetPasswordEmail(email, newPassword);
+    }
+    catch (err) {
+        res.status(400).json({msg: 'Failed to reset password', error: err});
+    }
+}
+
+const resetPassword = async (req, res) => {
+    try {
+        console.log("Reset password: ", req.body);
+        const user = req.user;
+
+        const { oldPassword, newPassword } = req.body;
+        const isMatch = await user.matchPassword(oldPassword);
+        if (!isMatch) {
+            return res.status(400).json({msg: 'Password incorrect'});
+        }
+        user.password = newPassword;
+        await user.save();
+        res.status(200).json({msg: 'Password reset'});
+    }
+    catch (err) {
+        res.status(400).json({msg: 'Failed to reset password', error: err});
+    }
+}
 
 module.exports = {
     register,
     login,
     confirm,
     update,
-    updateAvatar
+    updateAvatar,
+    forgotPassword,
+    resetPassword
 };
