@@ -9,7 +9,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
 }
 
 ### GET MESSAGES
-GET http://localhost:3000/messages/inbox/66a39662a7e21e8958e46f3e/1
+GET http://localhost:3000/messages/inbox/66a39662a7e21e8958e46f3e
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
 
