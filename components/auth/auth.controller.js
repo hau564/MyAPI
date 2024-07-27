@@ -47,20 +47,20 @@ const login = async (req, res) => {
         const { email, password } = req.body;
         const user = await User.findOne({ email});
         if (!user) {
-            return res.status(404).send('User not exist');
+            return res.status(404).json({msg: 'User not exist'});
         }
         if (!user.isVerified) {
-            return res.status(401).send('Email not verified');
+            return res.status(401).json({msg: 'Email not verified'});
         }
         const isMatch = await user.matchPassword(password);
         if (!isMatch) {
-            return res.status(400).send('Password incorrect');
+            return res.status(400).send({msg: 'Password incorrect'});
         }
         const token = jwt.sign({ _id: user._id }, process.env.AUTH_KEY);
         res.status(200).json({ token, user: user.privateView() });
     }
     catch (err) {
-        res.status(400).send(err);
+        res.status(400).json({error: err, msg: 'Failed to login'});
     }
 }
 
