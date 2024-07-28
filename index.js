@@ -22,10 +22,10 @@ app.use('/auth', authRoute);
 const userRoute = require('./components/user/user.route.js');
 app.use('/users', userRoute);
 
-const messageRoute = require('./components/message/message.route.js');
-app.use('/messages', messageRoute);
-
 users = {};
+
+const messageRoute = require('./components/message/message.route.js')(io, users);
+app.use('/messages', messageRoute);
 
 app.get('/', (req, res) => {
     io.to(users['669cf99daa753eb21a3a9e28'])
@@ -39,23 +39,6 @@ io.on('connection', (socket) => {
     socket.on('register', async (userId) => {
         users[userId] = socket.id;
         console.log('User registered:', userId);        
-    });
-
-    // Listen for incoming messages
-    socket.on('sendMessage', async (data) => {
-        try {
-            // const message = new Message({
-            //     sender: data.sender,
-            //     receiver: data.receiver,
-            //     content: data.content
-            // });
-            // await message.save();
-
-            // // Emit the message to the receiver
-            // io.to(data.receiver).emit('receiveMessage', message);
-        } catch (error) {
-            console.error('Error saving message:', error);
-        }
     });
 
     // Disconnect event

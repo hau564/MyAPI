@@ -1,11 +1,11 @@
 ### SEND MESSAGE
 POST http://localhost:3000/messages/send
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzOTY2MmE3ZTIxZTg5NThlNDZmM2UiLCJpYXQiOjE3MjIxNzAzMTB9.WJyp0njw298uoUwLDYijCWn8mvl8ajzXalkaxXK0ddY
 
 {
-  "receiverId": "66a39662a7e21e8958e46f3e",
-  "content": "Hello"
+  "receiverId": "669cf99daa753eb21a3a9e28",
+  "content": "Hjälp! Jag har fastnat i en loop!"
 }
 
 ### GET MESSAGES

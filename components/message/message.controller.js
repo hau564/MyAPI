@@ -1,10 +1,10 @@
 const Message = require('../models/message.model');
 const User = require('../models/user.model');
 
-const send = async (req, res) => {
+const send = async (io, users, req, res) => {
     try {
         if (!req.body.receiverId) {
-            return res.status(400).json({ msg: 'Receiver is required' });
+            return res.status(400).json({ msg: 'receiverId is required' });
         }
         const receiver = await User.findById(req.body.receiverId);
         if (!receiver) {
@@ -19,6 +19,8 @@ const send = async (req, res) => {
         await message.save();
 
         res.status(200).json(message);
+
+        io.to(users[receiver._id]).emit('receiveMessage', message);
     }
     catch (err) {
         res.status(500).json({ 
