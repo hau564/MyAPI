@@ -28,8 +28,8 @@ const messageRoute = require('./components/message/message.route.js')(io, users)
 app.use('/messages', messageRoute);
 
 app.get('/', (req, res) => {
-    io.to(users['669cf99daa753eb21a3a9e28'])
-        .emit('receiveMessage', {content: 'Hello from server'});
+    // io.to(users['669cf99daa753eb21a3a9e28'])
+    //     .emit('receiveMessage', {content: 'Hello from server'});
     res.send('Hello World');
 });
 
@@ -48,5 +48,5 @@ io.on('connection', (socket) => {
 });
 
 
-server.listen(process.env.PORT, '0.0.0.0', () => console.log('Server is running on port ' + process.env.PORT));
+server.listen(process.env.PORT, '0.0.0.0', () => console.log('Server is running on localhost:' + process.env.PORT));
 

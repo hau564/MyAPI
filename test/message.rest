@@ -5,7 +5,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzOTY2M
 
 {
   "receiverId": "669cf99daa753eb21a3a9e28",
-  "content": "Hjälp! Jag har fastnat i en loop!"
+  "content": "Hell"
 }
 
 ### GET MESSAGES
@@ -14,7 +14,7 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
 
 
-### GET MESSAGED USERS
-GET http://localhost:3000/messages/users
+### GET LAST MESSAGES
+GET http://localhost:3000/messages/last-messages
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0

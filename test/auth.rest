@@ -14,7 +14,7 @@ Content-Type: application/json
 ### CONFIRM EMAIL
 GET http://localhost:3000/auth/confirm/sfjsdm
 
-
+### https://spotted-j7ld.onrender.com/
 
 ### LOGIN
 POST http://localhost:3000/auth/login

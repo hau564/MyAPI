@@ -129,6 +129,7 @@ const forgotPassword = async (req, res) => {
         user.password = newPassword;
         await user.save();
         sendResetPasswordEmail(email, newPassword);
+        res.status(200).json({msg: 'Password reset email has been sent'});
     }
     catch (err) {
         res.status(400).json({msg: 'Failed to reset password', error: err});

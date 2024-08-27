@@ -1,5 +1,6 @@
 const Message = require('../models/message.model');
 const User = require('../models/user.model');
+const Query = require('./message.query');
 
 const send = async (io, users, req, res) => {
     try {
@@ -54,23 +55,9 @@ const inbox = async (req, res) => {
     }
 }
 
-const users = async (req, res) => {
+const lastMessages = async (req, res) => {
     try {
-        // retrieve all users in publicView that have sent or recieved a message to the current user
-        const users = await User.find({
-            $or: [
-                { _id: { $in: await Message.distinct('sender', { receiver: req.user._id }) } },
-                { _id: { $in: await Message.distinct('receiver', { sender: req.user._id }) } },
-            ],
-        }).select('_id');
-
-        // rename _id to id
-        users.forEach(user => {
-            user.id = user._id;
-            delete user._id;
-        });
-
-        res.status(200).json(users);
+        res.status(200).json(await Query.getLastMessages(req.user._id));
     }
     catch (err) {
         res.status(500).json({ 
@@ -83,5 +70,5 @@ const users = async (req, res) => {
 module.exports = {
     send,
     inbox,
-    users,
+    lastMessages,
 };
