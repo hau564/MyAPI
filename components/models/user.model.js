@@ -53,8 +53,6 @@ userSchema.methods.publicView = function () {
     delete user.password;
     delete user.__v;
     delete user.email;
-    user.id = user._id;
-    delete user._id;
     return user;
 };
 
@@ -62,8 +60,6 @@ userSchema.methods.privateView = function () {
     const user = this.toObject();
     delete user.password;
     delete user.__v;
-    user.id = user._id;
-    delete user._id;
     return user;
 };
 

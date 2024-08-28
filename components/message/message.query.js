@@ -3,12 +3,13 @@ const mongoose = require('mongoose');
 
 async function getLastMessages(userId) {
     try {
+        console.log(userId)
         const messages = await Message.aggregate([
             {
                 $match: {
                     $or: [
-                        { sender: new mongoose.Types.ObjectId(userId) },
-                        { receiver: new mongoose.Types.ObjectId(userId) }
+                        { sender: userId },
+                        { receiver: userId }
                     ]
                 }
             },

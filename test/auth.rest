@@ -1,3 +1,4 @@
+### replace http://localhost:3000 by https://spotted-j7ld.onrender.com
 
 
 ### SIGN UP
@@ -14,24 +15,23 @@ Content-Type: application/json
 ### CONFIRM EMAIL
 GET http://localhost:3000/auth/confirm/sfjsdm
 
-### https://spotted-j7ld.onrender.com/
 
 ### LOGIN
 POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-  "email": "spotted.vietnam@gmail.com",
+  "email": "caynhat05062004@gmail.com",
   "password": "123456"
 }
 
 ### RESET PASSWORD
 POST http://localhost:3000/auth/reset-password
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE5ODg1NTl9.hHPQTioqRI0_uG8FIH7u6Plxa9qpTrDUbwypqO_Mzuk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
 
 {
-  "oldPassword": "123456",
+  "oldPassword": "oufya2gx",
   "newPassword": "123456"
 }
 
@@ -63,8 +63,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
 PUT http://localhost:3000/auth/profile/avatar
 Content-Type: multipart/form-data
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
-
-
 
 
 

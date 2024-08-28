@@ -1,20 +1,26 @@
 ### SEND MESSAGE
 POST http://localhost:3000/messages/send
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NmEzOTY2MmE3ZTIxZTg5NThlNDZmM2UiLCJpYXQiOjE3MjIxNzAzMTB9.WJyp0njw298uoUwLDYijCWn8mvl8ajzXalkaxXK0ddY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
 
 {
-  "receiverId": "669cf99daa753eb21a3a9e28",
-  "content": "Hell"
+  "receiverId": "66cdf0ad4abd7cafe4ad869e",
+  "content": "th to vq 2"
 }
 
-### GET MESSAGES
-GET http://localhost:3000/messages/inbox/66a39662a7e21e8958e46f3e
+### GET 100 MESSAGES
+GET http://localhost:3000/messages/inbox/66cdf0ad4abd7cafe4ad869e
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
+
+
+### GET 100 MESSAGES (skip x first messages: /x)
+GET http://localhost:3000/messages/inbox/66cdf0ad4abd7cafe4ad869e/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
 
 
 ### GET LAST MESSAGES
 GET http://localhost:3000/messages/last-messages
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjE4Mjk5OTV9.7lTXJ3ltagC5MxXIZKoUrjOPnYVTkqUavhW1f8rewa0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0

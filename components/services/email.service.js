@@ -21,7 +21,7 @@ const sendResetPasswordEmail = (email, password) => {
   transporter.sendMail({
     to: email,
     subject: 'Reset Password',
-    html: `Your new password is: ${password}\nPlease change it after login`,
+    html: `Your new password is: ${password}\n\nPlease change it after login`,
   });
 };
 
