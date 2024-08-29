@@ -6,7 +6,6 @@ const http = require('http');
 
 const app = express();
 const server = http.createServer(app);
-const io = socket(server);
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL)
@@ -16,17 +15,17 @@ mongoose.connect(process.env.DATABASE_URL)
 app.use(express.json());
 
 
-const authRoute = require('./components/auth/auth.route.js');
+const authRoute = require('./components/routes/auth.route.js');
 app.use('/auth', authRoute);
 
-const userRoute = require('./components/user/user.route.js');
+const userRoute = require('./components/routes/user.route.js');
 app.use('/users', userRoute);
 
-users = {};
-
-const messageRoute = require('./components/message/message.route.js')(io, users);
+const messageRoute = require('./components/routes/message.route.js');
 app.use('/messages', messageRoute);
 
+global.io = socket(server);
+global.users = {};
 app.get('/', (req, res) => {
     // io.to(users['669cf99daa753eb21a3a9e28'])
     //     .emit('receiveMessage', {content: 'Hello from server'});
@@ -48,5 +47,5 @@ io.on('connection', (socket) => {
 });
 
 
-server.listen(process.env.PORT, '0.0.0.0', () => console.log('Server is running on localhost:' + process.env.PORT));
+server.listen(process.env.PORT, '0.0.0.0', () => console.log('Server is running on port ' + process.env.PORT));
 

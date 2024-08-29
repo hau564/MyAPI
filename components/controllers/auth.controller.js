@@ -1,4 +1,4 @@
-const User = require('../models/user.model');
+const User = require('../models/user.model.js');
 // auth key
 const jwt = require('jsonwebtoken');
 const { sendConfirmationEmail, sendResetPasswordEmail } = require('../services/email.service.js');

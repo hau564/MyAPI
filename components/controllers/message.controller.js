@@ -1,8 +1,8 @@
 const Message = require('../models/message.model');
 const User = require('../models/user.model');
-const Query = require('./message.query');
+const Query = require('../queries/message.query');
 
-const send = async (io, users, req, res) => {
+const send = async (req, res) => {
     try {
         if (!req.body.receiverId) {
             return res.status(400).json({ msg: 'receiverId is required' });
@@ -20,8 +20,9 @@ const send = async (io, users, req, res) => {
         await message.save();
 
         res.status(200).json(message);
-
-        io.to(users[receiver._id]).emit('receiveMessage', message);
+        
+        // console.log("A message sent!");
+        global.io.to(global.users[receiver._id]).emit('receiveMessage', message);
     }
     catch (err) {
         res.status(500).json({ 
