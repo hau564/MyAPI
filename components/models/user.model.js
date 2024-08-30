@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
         type: String,
     },
     interests: {
-        type: [String],
+        type: String,
     },
     avatarUrl: {
         type: String,
