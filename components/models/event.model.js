@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
-    decription: {
+    description: {
         type: String
     },
     start: {
@@ -13,6 +13,7 @@ const eventSchema = new mongoose.Schema({
         required: true
     },
     location: {
+        // latitude and longitude
         type: [Number],
         required: true
     },
@@ -21,11 +22,9 @@ const eventSchema = new mongoose.Schema({
         required: true
     },
     joinMode: {
-        type: {
-            String,
-            enum: ['Everyone', 'Accepted Only', 'Invited Only'],
-            required: true
-        }
+        type: String,
+        enum: ["Everyone", "Accepted Only", "Invited Only"],
+        required: true
     },
     maxParticipants: {
         type: Number,

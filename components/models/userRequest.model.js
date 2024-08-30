@@ -18,4 +18,6 @@ const userRequestSchema = new mongoose.Schema({
     },
 });
 
+userRequestSchema.index({ userId: 1, requestID: 1 }, { unique: true });
+
 module.exports = mongoose.model('UserRequest', userRequestSchema);

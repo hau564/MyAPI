@@ -3,7 +3,6 @@ const mongoose = require('mongoose');
 
 async function getLastMessages(userId) {
     try {
-        console.log(userId)
         const messages = await Message.aggregate([
             {
                 $match: {

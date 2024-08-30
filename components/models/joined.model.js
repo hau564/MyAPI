@@ -17,4 +17,6 @@ const joinedSchema = new mongoose.Schema({
     }
 });
 
+joinedSchema.index({ eventID: 1, userID: 1 }, { unique: true });
+
 module.exports = mongoose.model('Joined', joinedSchema);

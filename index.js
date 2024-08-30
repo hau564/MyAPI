@@ -24,14 +24,15 @@ app.use('/users', userRoute);
 const messageRoute = require('./components/routes/message.route.js');
 app.use('/messages', messageRoute);
 
-global.io = socket(server);
-global.users = {};
+const eventRoute = require('./components/routes/event.route.js');
+app.use('/events', eventRoute);
+
 app.get('/', (req, res) => {
-    // io.to(users['669cf99daa753eb21a3a9e28'])
-    //     .emit('receiveMessage', {content: 'Hello from server'});
     res.send('Hello World');
 });
 
+global.io = socket(server);
+global.users = {};
 io.on('connection', (socket) => {
     console.log('A user connected');
 

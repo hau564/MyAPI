@@ -21,4 +21,6 @@ const InvitationSchema = new mongoose.Schema({
     },
 });
 
+InvitationSchema.index({ userID: 1, adminID: 1 }, { unique: true });
+
 module.exports = mongoose.model('Invitation', InvitationSchema);

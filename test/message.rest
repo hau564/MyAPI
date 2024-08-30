@@ -24,3 +24,4 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
 GET http://localhost:3000/messages/last-messages
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
+

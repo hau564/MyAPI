@@ -26,7 +26,7 @@ Content-Type: application/json
 }
 
 ### RESET PASSWORD
-POST http://localhost:3000/auth/reset-password
+POST https://spotted-j7ld.onrender.com/reset-password
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
 
@@ -34,6 +34,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
   "oldPassword": "oufya2gx",
   "newPassword": "123456"
 }
+### RESET PASSWORD
+POST http://localhost:3000/auth/reset-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ5MjYyNTV9.C5ZjVWsTQG5YHA2M2rBnUkFPLE8FGqW7LBGoc5sKnko
+{"newPassword":"thanhduy","oldPassword":"g30zua73"}
 
 ### FORGOT PASSWORD
 POST http://localhost:3000/auth/forgot-password
