@@ -11,8 +11,9 @@ const adminSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-    level: {
-        type: Number,
+    mode: {
+        type: String,
+        enum: ["Create", "Edit", "Accept"],
         required: true
     },
     createdAt: {
