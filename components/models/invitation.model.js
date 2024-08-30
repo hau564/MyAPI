@@ -15,9 +15,9 @@ const InvitationSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    expiresAt: {
-        type: Date,
-        required: true
+    expiresIn: {
+        type: Number,
+        default: 86400000
     },
 });
 

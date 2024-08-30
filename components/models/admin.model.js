@@ -13,7 +13,7 @@ const adminSchema = new mongoose.Schema({
     },
     mode: {
         type: String,
-        enum: ["Create", "Edit", "Accept"],
+        enum: ["Create", "Edit", "Invite", "Deleted"],
         required: true
     },
     createdAt: {
@@ -21,5 +21,7 @@ const adminSchema = new mongoose.Schema({
         default: Date.now
     }
 });
+
+adminSchema.index({ eventID: 1, userID: 1 }, { unique: true });
 
 module.exports = mongoose.model('Admin', adminSchema);
