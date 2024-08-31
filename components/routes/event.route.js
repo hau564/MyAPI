@@ -8,7 +8,12 @@ const { authenticate } = require('../services/authenticate.service.js');
 router.post('/create', authenticate, eventController.createEvent);
 router.post('/admin', authenticate, eventController.inviteAdmin);
 router.post('/invite', authenticate, eventController.inviteUser);
+router.get('/events', authenticate, eventController.getEvents);
 
-router.post('/accept/:id', authenticate, participateController.acceptInvitation);
+router.post('/invitation/accept/:id', authenticate, participateController.acceptInvitation);
+router.get('/invitations', authenticate, participateController.getInvitations);
+
+router.get('/joined', authenticate, participateController.getJoinedEvents);
+
 
 module.exports = router;

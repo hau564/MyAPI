@@ -17,7 +17,7 @@ const InvitationSchema = new mongoose.Schema({
     },
     expiresIn: {
         type: Number,
-        default: 86400000
+        default: 8640000000
     },
 });
 
