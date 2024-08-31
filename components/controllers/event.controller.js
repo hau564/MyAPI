@@ -68,7 +68,7 @@ const inviteUser = async(req, res) => {
         if (!admin || admin.mode == "Deleted") {
             return res.status(403).json({msg: "Only admins can invite users"});
         }
-        if (Joined.findOne({eventID: req.body.eventID, userID: req.body.userID})) {
+        if (await Joined.findOne({eventID: req.body.eventID, userID: req.body.userID})) {
             return res.status(403).json({msg: "User already joined"});
         }
         
@@ -90,7 +90,7 @@ const inviteUser = async(req, res) => {
 }
 
 const getEvents = async(req, res) => {
-    
+
 }
 
 module.exports = {
