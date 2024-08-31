@@ -4,6 +4,10 @@ const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
 const Invitation = require('../models/invitation.model');
 
+const EventQuery = require('../queries/event.query');
+
+const mongoose = require('mongoose');
+
 const createEvent = async(req, res) => {
     try {
         const event = new Event({
@@ -89,13 +93,43 @@ const inviteUser = async(req, res) => {
     }
 }
 
-const getEvents = async(req, res) => {
-
+const joinEvent = async(req, res) => {
+    try {
+        const event = await Event.findOne({_id: req.params.id});
+        if (!event) {
+            return res.status(404).json({msg: "Event not found"});
+        }
+        const admin = await Admin.findOne({eventID: req.params.id, userID: req.user._id});
+        if (event.joinMode !== "Everyone" && (!admin || admin.mode == "Deleted")) {
+            return res.status(403).json({msg: "Unable to join event, please send a request"});
+        }
+        const count = await EventQuery.countJoined(event._id);
+        if (count >= event.maxParticipants) {
+            return res.status(403).json({msg: "Event is full"});
+        }
+        const joined = new Joined({
+            eventID: req.params.id,
+            userID: req.user._id,
+        });
+        try {
+            await joined.save();
+        }
+        catch (err) {
+            return res.status(400).json({msg: "User already joined"});
+        }
+        res.status(200).json(joined);
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while joining the event",
+            error: err.message,
+         });
+    }
 }
 
 module.exports = {
     createEvent,
     inviteAdmin,
     inviteUser,
-    getEvents,
+    joinEvent 
 };

@@ -4,6 +4,8 @@ const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
 const Invitation = require('../models/invitation.model');
 
+const EventQuery = require('../queries/event.query');
+
 const acceptInvitation = async (req, res) => {
     try {
         const invitation = await Invitation.findOne({_id: req.params.id});
@@ -53,9 +55,9 @@ const getInvitations = async (req, res) => {
 
 const getJoinedEvents = async (req, res) => {
     try {
-        console.log(req.user);    
-        const joined = await Joined.find({userID: req.user._id});
-        res.status(200).json(joined);
+        // const joined = await Joined.find({userID: req.user._id});
+        const events = await EventQuery.getJoinedEvents(req.user._id);
+        res.status(200).json(events);
     }
     catch (err) {
         res.status(400).json({error: err.message, msg: 'Failed to get joined events'});

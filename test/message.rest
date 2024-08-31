@@ -14,8 +14,8 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
 
 
-### GET 100 MESSAGES (skip x first messages: /x)
-GET http://localhost:3000/messages/inbox/66cdf0ad4abd7cafe4ad869e/1
+### GET 100 MESSAGES (skip x messages: /x)
+GET http://localhost:3000/messages/inbox/66cdf0ad4abd7cafe4ad869e/2
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5ZGFhNzUzZWIyMWEzYTllMjgiLCJpYXQiOjE3MjQ4Mzc1NDF9.fxkOBMyYOB8ZoAUvK9pN4ft7fus8D8jpFozs5tZPio0
 
