@@ -10,22 +10,32 @@ const mongoose = require('mongoose');
 
 const searchEvent = async (req, res) => {
     try {
-        await Event.aggregate([
+        const events = await Event.aggregate([
             {
-              $geoNear: {
-                near: { type: "Point", coordinates: [-74.0060, 40.7128] }, // [longitude, latitude]
-                distanceField: "dist.calculated",
-                maxDistance: 1000, // 1000 meters
-                spherical: true
-              }
-            }
-          ])
+                $geoNear: {
+                    near: { 
+                        type: "Point", 
+                        coordinates: [req.body.longitude, req.body.latitude] 
+                    },
+                    distanceField: "dist.calculated",
+                    maxDistance: req.body.distance,
+                    spherical: true
+                }
+            },
+            // {
+                // $project: {
+                //     longitude: { $arrayElemAt: ["$location.coordinates", 0] }, // longitude
+                //     latitude: { $arrayElemAt: ["$location.coordinates", 1] }   // latitude
+                // }
+            // }
+        ]);        
+        res.status(200).json(events)
     }
     catch (err) {
         res.status(500).json({ 
             msg: "An error occurred while searching for the event",
             error: err.message,
-         });
+        });
     }
 }
 
