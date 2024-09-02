@@ -60,8 +60,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2NjljZjk5Z
 {
   "isVerified": false,
   "name": "Hehe",
-  "phone": "012345",
-  "interests": ["chess"]
+  "phone": "012345"
 }
 
 ### UPDATE AVATAR

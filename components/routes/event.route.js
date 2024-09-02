@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const eventController = require('../controllers/event.controller');
+const adminController = require('../controllers/admin.controller.js');
 const participateController = require('../controllers/participate.controller');
+const eventController = require('../controllers/event.controller');
 const { authenticate } = require('../services/authenticate.service.js');
 
 
-router.post('/create', authenticate, eventController.createEvent);
-router.post('/admin', authenticate, eventController.inviteAdmin);
-router.post('/invite', authenticate, eventController.inviteUser);
-router.get('/join/:id', authenticate, eventController.joinEvent);
+router.post('/create', authenticate, adminController.createEvent);
+router.post('/admin', authenticate, adminController.inviteAdmin);
+router.post('/invite', authenticate, adminController.inviteUser);
+router.post('/join/:id', authenticate, adminController.joinEvent);
+
+router.get('/search', authenticate, eventController.searchEvent);
 
 router.post('/invitation/accept/:id', authenticate, participateController.acceptInvitation);
 router.get('/invitations', authenticate, participateController.getInvitations);

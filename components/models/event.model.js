@@ -13,9 +13,8 @@ const eventSchema = new mongoose.Schema({
         // required: true
     },
     location: {
-        // latitude and longitude
-        type: [Number],
-        // required: true
+        type: { type: String, default: "Point" },
+        coordinates: { type: [Number], required: true } // [longitude, latitude]
     },
     type: {
         type: String,
@@ -35,5 +34,7 @@ const eventSchema = new mongoose.Schema({
         default: Date.now
     },
 });
+
+eventSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model('Event', eventSchema);
