@@ -100,13 +100,46 @@ const requestJoin = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({error: err.message, msg: 'Failed to request join event'});
+        console.log(err);
     }
 }
 
+
+const getRequestInfo = async (req, res) => {
+    try {
+        const request = await Request.findOne({_id: req.params.id});
+        if (!request) {
+            return res.status(404).json({msg: 'Request not found'});
+        }
+        // flag = false;
+        // const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
+        // if (admin) {
+        //     flag = true;
+        // }
+        // const userRequests = await UserRequest.find({requestID: request._id});
+        // users = [];
+        // for (let i = 0; i < userRequests.length; i++) {
+        //     if (userRequests[i].userID.toString() == req.user._id.toString()) {
+        //         flag = true;
+        //     }
+            
+        // }
+        // if (!flag) {
+        //     res.status(403).json({msg: 'Unauthorized to get request info'});
+        // }
+        const event = await Event.findById(request.eventID);
+        res.status(200).json({event});
+    }
+    catch (err) {
+        res.status(400).json({error: err.message, msg: 'Failed to get request info'});
+        console.log(err);
+    }
+}
 
 module.exports = {
     acceptInvitation,  
     getInvitations,
     getJoinedEvents,
     requestJoin,
+    getRequestInfo,
 };

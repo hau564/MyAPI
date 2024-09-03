@@ -18,6 +18,7 @@ router.get('/get/:id', eventController.getEvent);
 router.post('/invitation/accept/:id', authenticate, participateController.acceptInvitation);
 router.get('/invitations', authenticate, participateController.getInvitations);
 router.post('/request-join', authenticate, participateController.requestJoin);
+router.get('/request-info/:id', authenticate, participateController.getRequestInfo);
 
 router.get('/joined', authenticate, participateController.getJoinedEvents);
 
