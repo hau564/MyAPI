@@ -62,7 +62,24 @@ const isAdmin = async (req, res) => {
     }
 }
 
+const getEvent = async (req, res) => {
+    try {
+        const event = await Event.findById(req.params.id).lean();
+        // create longitude and latitude fields
+        event.longitude = event.location.coordinates[0];
+        event.latitude = event.location.coordinates[1];
+        res.status(200).json(event);
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while getting the event",
+            error: err.message,
+        });
+    }
+}
+
 module.exports = {
     searchEvent,
     isAdmin,
+    getEvent,
 };
