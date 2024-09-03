@@ -33,6 +33,10 @@ const eventSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    address: {
+        type: String,
+        // required: true
+    },
 });
 
 eventSchema.index({ location: "2dsphere" });

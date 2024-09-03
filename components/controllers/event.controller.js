@@ -43,6 +43,26 @@ const searchEvent = async (req, res) => {
     }
 }
 
+const isAdmin = async (req, res) => {
+    try {
+        const admin = await Admin.findOne({ eventID: req.params.id, userID: req.user._id });
+        if (admin) {
+            res.status(200).json({ admin }); 
+        }
+        else {
+            res.status(200).json({ msg: "User is not an admin of event" });
+        }
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while checking if user is an admin",
+            error: err.message,
+        });
+        console.log(err);
+    }
+}
+
 module.exports = {
     searchEvent,
+    isAdmin,
 };

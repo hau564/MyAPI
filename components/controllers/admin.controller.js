@@ -21,6 +21,7 @@ const createEvent = async(req, res) => {
             joinMode: req.body.joinMode,
             maxParticipants: req.body.maxParticipants,
             deadline: req.body.deadline,
+            address: req.body.address,
         });
         const admin = new Admin({
             eventID: event._id,

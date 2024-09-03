@@ -12,6 +12,7 @@ router.post('/invite', authenticate, adminController.inviteUser);
 router.post('/join/:id', authenticate, adminController.joinEvent);
 
 router.get('/search', authenticate, eventController.searchEvent);
+router.get('/get-admin-info/:id', authenticate, eventController.isAdmin);
 
 router.post('/invitation/accept/:id', authenticate, participateController.acceptInvitation);
 router.get('/invitations', authenticate, participateController.getInvitations);
