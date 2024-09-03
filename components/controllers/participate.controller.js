@@ -68,8 +68,45 @@ const getJoinedEvents = async (req, res) => {
     }
 }
 
+const Request = require('../models/request.model');
+const UserRequest = require('../models/userRequest.model');
+
+const requestJoin = async (req, res) => {
+    try {
+        const request = new Request({
+            eventID: req.body.eventID,
+        });
+        const users = req.body.userIDs;
+        flag = false;
+        for (let i = 0; i < users.length; i++) {
+            if (users[i] == req.user._id) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            return res.status(403).json({msg: 'Unauthorized to request join event'});
+        }
+        await request.save();
+        for (let i = 0; i < users.length; i++) {
+            const userRequest = new UserRequest({
+                requestID: request._id,
+                userID: users[i],
+                status: 'Pending',
+            });
+            await userRequest.save();
+        }
+        res.status(200).json(request);
+    }
+    catch (err) {
+        res.status(400).json({error: err.message, msg: 'Failed to request join event'});
+    }
+}
+
+
 module.exports = {
     acceptInvitation,  
     getInvitations,
     getJoinedEvents,
+    requestJoin,
 };
