@@ -29,6 +29,9 @@ const createEvent = async(req, res) => {
         });
         await admin.save();
         await event.save();
+        
+        event.longitude = event.location.coordinates[0];
+        event.latitude = event.location.coordinates[1];
         res.status(200).json({event, admin});
     }
     catch (err) {

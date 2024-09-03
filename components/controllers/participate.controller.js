@@ -57,6 +57,10 @@ const getJoinedEvents = async (req, res) => {
     try {
         // const joined = await Joined.find({userID: req.user._id});
         const events = await EventQuery.getJoinedEvents(req.user._id);
+        for (let i = 0; i < events.length; i++) {
+            events[i].event.longitude = events[i].event.location.coordinates[0];
+            events[i].event.latitude = events[i].event.location.coordinates[1];
+        }   
         res.status(200).json(events);
     }
     catch (err) {

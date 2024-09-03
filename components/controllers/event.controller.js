@@ -28,7 +28,11 @@ const searchEvent = async (req, res) => {
                 //     latitude: { $arrayElemAt: ["$location.coordinates", 1] }   // latitude
                 // }
             // }
-        ]);        
+        ]);     
+        for (let i = 0; i < events.length; i++) {
+            events[i].longitude = events[i].location.coordinates[0];
+            events[i].latitude = events[i].location.coordinates[1];
+        }   
         res.status(200).json(events)
     }
     catch (err) {
