@@ -5,6 +5,7 @@ const Joined = require('../models/joined.model');
 const Invitation = require('../models/invitation.model');
 
 const EventQuery = require('../queries/event.query');
+const NotificationQuery = require('../queries/notification.query');
 
 const mongoose = require('mongoose');
 
@@ -30,6 +31,7 @@ const createEvent = async(req, res) => {
         });
         await admin.save();
         await event.save();
+        await NotificationQuery.addNotification(req.user._id, "Event Created", event._id);
         
         event.longitude = event.location.coordinates[0];
         event.latitude = event.location.coordinates[1];

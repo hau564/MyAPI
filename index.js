@@ -27,6 +27,9 @@ app.use('/messages', messageRoute);
 const eventRoute = require('./components/routes/event.route.js');
 app.use('/events', eventRoute);
 
+const notificationRoute = require('./components/routes/notification.route.js');
+app.use('/notifications', notificationRoute);
+
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
