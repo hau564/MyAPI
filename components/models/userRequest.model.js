@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const userRequestSchema = new mongoose.Schema({
-    userId: {
+    userID: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -14,7 +14,8 @@ const userRequestSchema = new mongoose.Schema({
     status: {
         type: String,
         enum: ['Pending', 'Accepted', 'Rejected'],
-        required: true
+        required: true,
+        default: 'Pending'
     },
 });
 

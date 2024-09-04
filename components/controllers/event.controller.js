@@ -4,91 +4,82 @@ const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
 const Invitation = require('../models/invitation.model');
 
-const createEvent = async(req, res) => {
+const EventQuery = require('../queries/event.query');
+
+const mongoose = require('mongoose');
+
+const searchEvent = async (req, res) => {
     try {
-        const event = new Event({
-            description: req.body.description,
-            start: req.body.start,
-            duration: req.body.duration,
-            location: req.body.location,
-            type: req.body.type,
-            joinMode: req.body.joinMode,
-            maxParticipants: req.body.maxParticipants,
-            deadline: req.body.deadline,
-        });
-        const admin = new Admin({
-            eventID: event._id,
-            userID: req.user._id,
-            mode: "Create",
-        });
-        await admin.save();
-        await event.save();
-        res.status(200).json({event, admin});
+        const events = await Event.aggregate([
+            {
+                $geoNear: {
+                    near: { 
+                        type: "Point", 
+                        coordinates: [req.body.longitude, req.body.latitude] 
+                    },
+                    distanceField: "dist.calculated",
+                    maxDistance: req.body.distance,
+                    spherical: true
+                }
+            },
+            // {
+                // $project: {
+                //     longitude: { $arrayElemAt: ["$location.coordinates", 0] }, // longitude
+                //     latitude: { $arrayElemAt: ["$location.coordinates", 1] }   // latitude
+                // }
+            // }
+        ]);     
+        for (let i = 0; i < events.length; i++) {
+            events[i].longitude = events[i].location.coordinates[0];
+            events[i].latitude = events[i].location.coordinates[1];
+        }   
+        res.status(200).json(events)
     }
     catch (err) {
         res.status(500).json({ 
-            msg: "An error occurred while creating the event",
+            msg: "An error occurred while searching for the event",
             error: err.message,
-         });
+        });
     }
 }
 
-const inviteAdmin = async(req, res) => {
+const isAdmin = async (req, res) => {
     try {
-        const admin = await Admin.findOne({eventID: req.body.eventID, userID: req.user._id});
-        if (admin.mode !== "Create") {
-            return res.status(403).json({msg: "Only owner can invite admins"});
+        const admin = await Admin.findOne({ eventID: req.params.id, userID: req.user._id });
+        if (admin) {
+            res.status(200).json({ admin }); 
         }
-        if (req.body.mode == "Create") {
-            return res.status(403).json({msg: "Cannot edit admin with Create mode"});
+        else {
+            res.status(200).json({ msg: "User is not an admin of event" });
         }
-        const oldAdmin = await Admin.findOne({eventID: req.body.eventID, userID: req.body.userID});
-        await Admin.deleteOne({_id: oldAdmin._id});
-        const newAdmin = new Admin({
-            eventID: req.body.eventID,
-            userID: req.body.userID,
-            mode: req.body.mode,
-        });
-        await newAdmin.save();
-        res.status(200).json(newAdmin);
     }
     catch (err) {
         res.status(500).json({ 
-            msg: "An error occurred while inviting the admin",
+            msg: "An error occurred while checking if user is an admin",
             error: err.message,
-         });
+        });
+        console.log(err);
     }
 }
 
-
-const inviteUser = async(req, res) => {
+const getEvent = async (req, res) => {
     try {
-        const admin = await Admin.findOne({eventID: req.body.eventID, userID: req.user._id});
-        
-        if (!admin || admin.mode == "Deleted") {
-            return res.status(403).json({msg: "Only admins can invite users"});
-        }
-        
-        const invitation = new Invitation({
-            userID: req.body.userID,
-            adminID: admin._id,
-            expiresIn: req.body.expiresIn,
-        });
-        await invitation.save();
-
-        res.status(200).json(invitation);
+        const event = await Event.findById(req.params.id).lean();
+        // create longitude and latitude fields
+        event.longitude = event.location.coordinates[0];
+        event.latitude = event.location.coordinates[1];
+        res.status(200).json(event);
     }
     catch (err) {
         res.status(500).json({ 
-            msg: "An error occurred while inviting the user",
+            msg: "An error occurred while getting the event",
             error: err.message,
-         });
+        });
     }
 }
-
 
 module.exports = {
-    createEvent,
-    inviteAdmin,
-    inviteUser,
+    searchEvent,
+    isAdmin,
+    getEvent,
 };

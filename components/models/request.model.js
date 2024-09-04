@@ -6,9 +6,14 @@ const requestSchema = new mongoose.Schema({
         ref: 'Event',
         required: true
     },
-    createdAt: {
+    sentAt: {
         type: Date,
-        default: Date.now
+    },
+    status: {
+        type: String,
+        enum: ['Waiting', 'Pending', 'Accepted', 'Rejected'],
+        required: true,
+        default: 'Waiting'
     },
 });
 

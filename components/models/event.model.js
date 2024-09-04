@@ -6,34 +6,39 @@ const eventSchema = new mongoose.Schema({
     },
     start: {
         type: Date,
-        required: true
+        // required: true
     },
     duration: {
         type: Number,
-        required: true
+        // required: true
     },
     location: {
-        // latitude and longitude
-        type: [Number],
-        required: true
+        type: { type: String, default: "Point" },
+        coordinates: { type: [Number], required: true } // [longitude, latitude]
     },
     type: {
         type: String,
-        required: true
+        // required: true
     },
     joinMode: {
         type: String,
         enum: ["Everyone", "Accepted Only", "Invited Only"],
-        required: true
+        // required: true
     },
     maxParticipants: {
         type: Number,
-        required: true
+        // required: true
     },
     deadline: {
         type: Date,
         default: Date.now
     },
+    address: {
+        type: String,
+        // required: true
+    },
 });
+
+eventSchema.index({ location: "2dsphere" });
 
 module.exports = mongoose.model('Event', eventSchema);

@@ -15,10 +15,10 @@ const InvitationSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    expiresIn: {
-        type: Number,
-        default: 86400000
-    },
+    // expiresIn: {
+    //     type: Number,
+    //     default: 8640000000
+    // },
 });
 
 InvitationSchema.index({ userID: 1, adminID: 1 }, { unique: true });

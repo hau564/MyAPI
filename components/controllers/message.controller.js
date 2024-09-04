@@ -42,7 +42,7 @@ const inbox = async (req, res) => {
                 { sender: req.params.id, receiver: req.user._id },
             ],
         })
-        .sort({ createdAt: -1 })
+        .sort({ sentAt: -1 })
         .limit(limit)
         .skip(skip);
         

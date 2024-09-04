@@ -113,6 +113,7 @@ const updateAvatar = async (req, res) => {
         });
       } catch (err) {
         res.status(500).send({error: err, msg: 'Failed to update avatar'});
+        console.log(err);
       }
 };
 
@@ -133,6 +134,7 @@ const forgotPassword = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({msg: 'Failed to reset password', error: err});
+        console.log(err);
     }
 }
 
@@ -152,6 +154,7 @@ const resetPassword = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({msg: 'Failed to reset password', error: err});
+        console.log(err);
     }
 }
 
