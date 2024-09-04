@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const notificationSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: ["Event Created", "User Joined", "Invitation Sent", "Invitation Received"],
+        enum: ["Event Created", "User Joined", "Invitation Sent", "Invitation Received", "New Request"],
         required: true
     },
     userID: {

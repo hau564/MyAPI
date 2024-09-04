@@ -1,4 +1,5 @@
 const Event = require('../models/event.model');
+const Admin = require('../models/admin.model');
 
 async function countJoined(eventID) {
     try {
@@ -82,8 +83,14 @@ async function acceptRequest(request) {
     await UserRequest.deleteMany({requestID: request._id});
 }
 
+async function getAdmins(eventID) {
+    const admins = await Admin.find({eventID: eventID, mode: {$in: ['Create', 'Edit', 'Invite']}});
+    return admins;
+}
+
 module.exports = {
     countJoined,
     getJoinedEvents,
-    acceptRequest
+    acceptRequest,
+    getAdmins
 };

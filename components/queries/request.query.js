@@ -1,6 +1,8 @@
 const e = require('express');
 const Request = require('../models/request.model');
 const UserRequest = require('../models/userRequest.model');
+const NotificationQuery = require('./notification.query');
+const EventQuery = require('./event.query');
 
 async function createRequest(eventID, userIDs) {
     try {
@@ -14,6 +16,10 @@ async function createRequest(eventID, userIDs) {
                 userID: user
             });
             await userRequest.save();
+        }
+        const admins = await EventQuery.getAdmins(eventID);
+        for (let admin of admins) {
+            await NotificationQuery.addNotification(admin.userID, 'New Request', request._id);
         }
         return request;
     }
