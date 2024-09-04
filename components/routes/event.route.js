@@ -10,6 +10,7 @@ router.post('/create', authenticate, adminController.createEvent);
 router.post('/admin', authenticate, adminController.inviteAdmin);
 router.post('/invite', authenticate, adminController.inviteUser);
 router.post('/join/:id', authenticate, adminController.joinEvent);
+router.post('/approve/:id', authenticate, adminController.acceptRequest);
 
 router.post('/search', authenticate, eventController.searchEvent);
 router.get('/get-admin-info/:id', authenticate, eventController.isAdmin);

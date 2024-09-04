@@ -73,26 +73,29 @@ const UserRequest = require('../models/userRequest.model');
 
 const requestJoin = async (req, res) => {
     try {
+        const users = req.body.userIDs;
+        // flag = false;
+        // for (let i = 0; i < users.length; i++) {
+        //     if (users[i] == req.user._id) {
+        //         flag = true;
+        //     }
+        //     const joined = await Joined.findOne({eventID: req, userID: users[i]});
+        //     if (joined) {
+        //         res.status(403).json({msg: 'User already joined event'});
+        //     }
+        // }
+        // if (!flag) {
+        //     return res.status(403).json({msg: 'Unauthorized to request join event'});
+        // }
         const request = new Request({
             eventID: req.body.eventID,
         });
-        const users = req.body.userIDs;
-        flag = false;
-        for (let i = 0; i < users.length; i++) {
-            if (users[i] == req.user._id) {
-                flag = true;
-                break;
-            }
-        }
-        if (!flag) {
-            return res.status(403).json({msg: 'Unauthorized to request join event'});
-        }
         await request.save();
         for (let i = 0; i < users.length; i++) {
             const userRequest = new UserRequest({
                 requestID: request._id,
                 userID: users[i],
-                status: 'Pending',
+                status: 'Accepted',
             });
             await userRequest.save();
         }
@@ -100,7 +103,7 @@ const requestJoin = async (req, res) => {
     }
     catch (err) {
         res.status(400).json({error: err.message, msg: 'Failed to request join event'});
-        console.log(err);
+        console.log(err.message);
     }
 }
 
@@ -111,22 +114,19 @@ const getRequestInfo = async (req, res) => {
         if (!request) {
             return res.status(404).json({msg: 'Request not found'});
         }
-        // flag = false;
-        // const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
-        // if (admin) {
-        //     flag = true;
-        // }
-        // const userRequests = await UserRequest.find({requestID: request._id});
-        // users = [];
-        // for (let i = 0; i < userRequests.length; i++) {
-        //     if (userRequests[i].userID.toString() == req.user._id.toString()) {
-        //         flag = true;
-        //     }
-            
-        // }
-        // if (!flag) {
-        //     res.status(403).json({msg: 'Unauthorized to get request info'});
-        // }
+        flag = false;
+        const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
+        if (admin) {
+            flag = true;
+        }
+        const userRequest = await UserRequest.find({requestID: request._id, userID: req.user._id});
+        if (userRequest) {
+            flag = true;
+        }
+        if (!flag) {
+            res.status(403).json({msg: 'Unauthorized to get request info'});
+        }
+        
         const event = await Event.findById(request.eventID);
         res.status(200).json({event});
     }

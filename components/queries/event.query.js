@@ -67,7 +67,23 @@ async function getJoinedEvents(userID) {
     }
 }
 
+const Request = require('../models/request.model');
+const UserRequest = require('../models/userRequest.model');
+async function acceptRequest(request) {
+    const userRequests = await UserRequest.find({requestID: request._id});
+    for (let userRequest of userRequests) {
+        const joined = new Joined({
+            eventID: request.eventID,
+            userID: userRequest.userID,
+        });
+        await joined.save();
+    }
+    await Request.deleteOne({_id: request._id});
+    await UserRequest.deleteMany({requestID: request._id});
+}
+
 module.exports = {
     countJoined,
     getJoinedEvents,
+    acceptRequest
 };

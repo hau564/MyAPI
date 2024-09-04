@@ -2,6 +2,7 @@ const { admin } = require('googleapis/build/src/apis/admin');
 const Event = require('../models/event.model');
 const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
+const Request = require('../models/request.model');
 const Invitation = require('../models/invitation.model');
 
 const EventQuery = require('../queries/event.query');
@@ -136,9 +137,32 @@ const joinEvent = async(req, res) => {
     }
 }
 
+const acceptRequest = async(req, res) => {
+    try {
+        const request = await Request.findOne({_id: req.params.id});
+        if (!request) {
+            return res.status(404).json({msg: "Request not found"});
+        }
+        const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
+        if (!admin || admin.mode == "Deleted") {
+            return res.status(403).json({msg: "Only admins can accept requests"});
+        }
+        await EventQuery.acceptRequest(request);
+        res.status(200).json({msg: "Request accepted"});
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while accepting the request",
+            error: err.message,
+         });    
+        console.log(err);
+    }
+}
+
 module.exports = {
     createEvent,
     inviteAdmin,
     inviteUser,
-    joinEvent 
+    joinEvent ,
+    acceptRequest,
 };
