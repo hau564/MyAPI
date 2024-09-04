@@ -5,6 +5,12 @@ const participateController = require('../controllers/participate.controller');
 const eventController = require('../controllers/event.controller');
 const { authenticate } = require('../services/authenticate.service.js');
 
+/*
+    * @swagger
+    * tags:
+    *   name: Events
+    *   description: Event management
+    */
 
 router.post('/create', authenticate, adminController.createEvent);
 router.post('/admin', authenticate, adminController.inviteAdmin);

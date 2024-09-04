@@ -3,9 +3,35 @@ require('dotenv').config();
 const express = require('express');
 const socket = require('socket.io');
 const http = require('http');
+const swaggerJsdoc = require('swagger-jsdoc');
+const swaggerUi = require('swagger-ui-express');
 
 const app = express();
 const server = http.createServer(app);
+
+
+const swaggerDefinition = {
+    openapi: '3.0.0',
+    info: {
+        title: 'Test API',
+        version: '1.0.0',
+    },
+    servers: [
+        {
+            url: 'http://localhost:3000',
+        },
+    ],
+};
+
+const options = {
+    swaggerDefinition,
+    apis: ['./components/routes/*.js', 'index.js'], // Point to this file
+};
+
+const swaggerSpec = swaggerJsdoc(options);
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
 
 const mongoose = require('mongoose');
 mongoose.connect(process.env.DATABASE_URL)
@@ -30,6 +56,15 @@ app.use('/events', eventRoute);
 const notificationRoute = require('./components/routes/notification.route.js');
 app.use('/notifications', notificationRoute);
 
+/**
+ * @swagger
+ * /:
+ *   get:
+ *     summary: Test 
+ *     responses:
+ *       200:
+ *         description: Success
+ */
 app.get('/', (req, res) => {
     res.send('Hello World');
 });

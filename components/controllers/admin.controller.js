@@ -34,6 +34,12 @@ const createEvent = async(req, res) => {
         await event.save();
         await NotificationQuery.addNotification(req.user._id, "Event Created", event._id);
         
+        const joined = new Joined({
+            eventID: event._id,
+            userID: req.user._id,
+        });
+        await joined.save();
+        
         event.longitude = event.location.coordinates[0];
         event.latitude = event.location.coordinates[1];
         res.status(200).json({event, admin});
