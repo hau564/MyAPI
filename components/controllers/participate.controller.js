@@ -3,8 +3,11 @@ const Event = require('../models/event.model');
 const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
 const Invitation = require('../models/invitation.model');
+const Request = require('../models/request.model');
+const UserRequest = require('../models/userRequest.model');
 
 const EventQuery = require('../queries/event.query');
+const RequestQuery = require('../queries/request.query');
 
 const acceptInvitation = async (req, res) => {
     try {
@@ -68,37 +71,11 @@ const getJoinedEvents = async (req, res) => {
     }
 }
 
-const Request = require('../models/request.model');
-const UserRequest = require('../models/userRequest.model');
-
 const requestJoin = async (req, res) => {
     try {
         const users = req.body.userIDs;
-        // flag = false;
-        // for (let i = 0; i < users.length; i++) {
-        //     if (users[i] == req.user._id) {
-        //         flag = true;
-        //     }
-        //     const joined = await Joined.findOne({eventID: req, userID: users[i]});
-        //     if (joined) {
-        //         res.status(403).json({msg: 'User already joined event'});
-        //     }
-        // }
-        // if (!flag) {
-        //     return res.status(403).json({msg: 'Unauthorized to request join event'});
-        // }
-        const request = new Request({
-            eventID: req.body.eventID,
-        });
-        await request.save();
-        for (let i = 0; i < users.length; i++) {
-            const userRequest = new UserRequest({
-                requestID: request._id,
-                userID: users[i],
-                status: 'Accepted',
-            });
-            await userRequest.save();
-        }
+        const request = await RequestQuery.createRequest(req.body.eventID, users);        
+        await RequestQuery.confirmRequest(request._id, req.user._id, 'Accepted');
         res.status(200).json(request);
     }
     catch (err) {

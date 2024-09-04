@@ -143,6 +143,12 @@ const acceptRequest = async(req, res) => {
         if (!request) {
             return res.status(404).json({msg: "Request not found"});
         }
+        if (request.status == "Waiting") {
+            return res.status(403).json({msg: "Request not found"});
+        }
+        if (request.status !== "Pending") {
+            return res.status(403).json({msg: "Request already processed"});
+        }
         const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
         if (!admin || admin.mode == "Deleted") {
             return res.status(403).json({msg: "Only admins can accept requests"});
