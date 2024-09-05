@@ -129,13 +129,13 @@ const getRole = async (req, res) => {
     try {
         const admin = await Admin.findOne({ eventID: req.params.id, userID: req.user._id });
         if (admin) {
-            return res.status(200).json({ role: "admin" });
+            return res.status(200).json("admin");
         }
         const joined = await Joined.findOne({ eventID: req.params.id, userID: req.user._id });
         if (joined) {
-            return res.status(200).json({ role: "participant" });
+            return res.status(200).json("participant");
         }
-        res.status(200).json({ role: "none" });
+        res.status(200).json("none");
     }
     catch (err) {
         res.status(500).json({ 
