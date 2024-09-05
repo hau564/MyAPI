@@ -125,9 +125,31 @@ const getParticipants = async (req, res) => {
     }
 }
 
+const getRole = async (req, res) => {
+    try {
+        const admin = await Admin.findOne({ eventID: req.params.id, userID: req.user._id });
+        if (admin) {
+            return res.status(200).json({ role: "admin" });
+        }
+        const joined = await Joined.findOne({ eventID: req.params.id, userID: req.user._id });
+        if (joined) {
+            return res.status(200).json({ role: "participant" });
+        }
+        res.status(200).json({ role: "none" });
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while getting the role",
+            error: err.message,
+        });
+        console.log(err);
+    }
+}
+
 module.exports = {
     searchEvent,
     isAdmin,
     getEvent,
     getParticipants,
+    getRole
 };
