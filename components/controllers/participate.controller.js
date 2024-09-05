@@ -104,7 +104,9 @@ const getRequestInfo = async (req, res) => {
             res.status(403).json({msg: 'Unauthorized to get request info'});
         }
         
-        const event = await Event.findById(request.eventID);
+        const event = await Event.findById(request.eventID).lean();
+        event.longitude = event.location.coordinates[0];
+        event.latitude = event.location.coordinates[1];
         res.status(200).json({event});
     }
     catch (err) {
