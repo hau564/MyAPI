@@ -146,10 +146,25 @@ const getRole = async (req, res) => {
     }
 }
 
+const getAdmins = async (req, res) => {
+    try {
+        const admins = await EventQuery.getAdmins(req.params.id);
+        res.status(200).json(admins);
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while getting the admins",
+            error: err.message,
+        });
+        console.log(err);
+    }
+}
+
 module.exports = {
     searchEvent,
     isAdmin,
     getEvent,
     getParticipants,
-    getRole
+    getRole,
+    getAdmins
 };
