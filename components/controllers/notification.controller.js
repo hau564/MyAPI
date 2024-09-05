@@ -4,7 +4,7 @@ const Notification = require('../models/notification.model');
 const getNotifications = async(req, res) => {
     try {
         // get 100 notifications from timestamp of user
-        const notifications = await Notification.find({createdAt: {$lt: req.params.timestamp}, userID: req.user._id}).limit(100);
+        const notifications = await Notification.find({createdAt: {$lt: req.params.timestamp}, userID: req.user._id,}).sort({createdAt: -1}).limit(100);
         res.status(200).json(notifications);
     }
     catch (err) {
