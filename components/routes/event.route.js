@@ -21,6 +21,7 @@ router.post('/approve/:id', authenticate, adminController.acceptRequest);
 router.post('/search', authenticate, eventController.searchEvent);
 router.get('/get-admin-info/:id', authenticate, eventController.isAdmin);
 router.get('/get/:id', eventController.getEvent);
+router.get('/get-participants/:id', authenticate, eventController.getParticipants);
 
 router.post('/invitation/accept/:id', authenticate, participateController.acceptInvitation);
 router.get('/invitations', authenticate, participateController.getInvitations);

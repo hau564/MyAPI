@@ -78,8 +78,56 @@ const getEvent = async (req, res) => {
     }
 }
 
+const getParticipants = async (req, res) => {
+    try {
+        const admin = await Admin.findOne({ eventID: req.params.id, userID: req.user._id });
+        const joined = await Joined.find({ eventID: req.params.id, userID: req.user._id });
+        if ((!admin || admin.mode == "Deleted") && !joined) {
+            return res.status(403).json({ msg: "Unauthorized to get participants" });
+        }
+        const participants = await Joined.aggregate([
+            {
+                $match: { eventID: new mongoose.Types.ObjectId(req.params.id) }
+            },
+            {
+                $lookup: {
+                    from: "users",
+                    localField: "userID",
+                    foreignField: "_id",
+                    as: "user"
+                }
+            },
+            {
+                $unwind: "$user"
+            },
+            // use user as root
+            {
+                $replaceRoot: {
+                    newRoot: "$user"
+                }
+            },
+            {
+                $project: {
+                    password: 0,
+                    __v: 0,
+                    email: 0
+                }
+            }
+        ]);
+        res.status(200).json(participants);
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while getting the participants",
+            error: err.message,
+        });
+        console.log(err);
+    }
+}
+
 module.exports = {
     searchEvent,
     isAdmin,
     getEvent,
+    getParticipants,
 };
