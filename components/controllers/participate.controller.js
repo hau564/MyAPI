@@ -114,21 +114,30 @@ const getRequestInfo = async (req, res) => {
                     $match: {requestID: request._id}
                 },
                 {
-                    $group: {
-                        _id: null,
-                        userIDs: {$push: '$userID'}
+                    $lookup: {
+                        from: 'users',
+                        localField: 'userID',
+                        foreignField: '_id',
+                        as: 'user'
                     }
                 },
                 {
+                    $unwind: '$user'
+                },
+                {
                     $project: {
-                        _id: 0,
-                        userIDs: 1
+                        'user.password': 0,
+                        'user.email': 0,
+                        'user.__v': 0
                     }
+                },
+                // reroot
+                {
+                    $replaceRoot: {newRoot: '$user'}
                 }
             ]
         );
-        const userIDs = users[0].userIDs;
-        res.status(200).json({event, userIDs});
+        res.status(200).json({event, users});
     }
     catch (err) {
         res.status(400).json({error: err.message, msg: 'Failed to get request info'});
