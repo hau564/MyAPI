@@ -88,26 +88,47 @@ const requestJoin = async (req, res) => {
 const getRequestInfo = async (req, res) => {
     try {
         const request = await Request.findOne({_id: req.params.id});
-        if (!request) {
-            return res.status(404).json({msg: 'Request not found'});
-        }
-        flag = false;
-        const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
-        if (admin) {
-            flag = true;
-        }
-        const userRequest = await UserRequest.find({requestID: request._id, userID: req.user._id});
-        if (userRequest) {
-            flag = true;
-        }
-        if (!flag) {
-            res.status(403).json({msg: 'Unauthorized to get request info'});
-        }
+        // if (!request) {
+        //     return res.status(404).json({msg: 'Request not found'});
+        // }
+        // flag = false;
+        // const admin = await Admin.findOne({eventID: request.eventID, userID: req.user._id});
+        // if (admin) {
+        //     flag = true;
+        // }
+        // const userRequest = await UserRequest.find({requestID: request._id, userID: req.user._id});
+        // if (userRequest) {
+        //     flag = true;
+        // }
+        // if (!flag) {
+        //     res.status(403).json({msg: 'Unauthorized to get request info'});
+        // }
         
         const event = await Event.findById(request.eventID).lean();
         event.longitude = event.location.coordinates[0];
         event.latitude = event.location.coordinates[1];
-        res.status(200).json({event});
+
+        const users = await UserRequest.aggregate(
+            [
+                {
+                    $match: {requestID: request._id}
+                },
+                {
+                    $group: {
+                        _id: null,
+                        userIDs: {$push: '$userID'}
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        userIDs: 1
+                    }
+                }
+            ]
+        );
+        const userIDs = users[0].userIDs;
+        res.status(200).json({event, userIDs});
     }
     catch (err) {
         res.status(400).json({error: err.message, msg: 'Failed to get request info'});
