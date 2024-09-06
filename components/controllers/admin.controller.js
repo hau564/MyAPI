@@ -13,6 +13,7 @@ const mongoose = require('mongoose');
 const createEvent = async(req, res) => {
     try {
         const event = new Event({
+            title: req.body.title,
             description: req.body.description,
             start: req.body.start,
             duration: req.body.duration,
@@ -23,6 +24,7 @@ const createEvent = async(req, res) => {
             joinMode: req.body.joinMode,
             maxParticipants: req.body.maxParticipants,
             deadline: req.body.deadline,
+            name: req.body.name,
             address: req.body.address,
         });
         const admin = new Admin({
@@ -32,14 +34,13 @@ const createEvent = async(req, res) => {
         });
         await admin.save();
         await event.save();
-        await NotificationQuery.addNotification(req.user._id, "Event Created", event._id);
         
         const joined = new Joined({
             eventID: event._id,
             userID: req.user._id,
         });
         await joined.save();
-        
+        await NotificationQuery.addNotification(req.user._id, "Event Created", event._id, event._id, "You created event " + event.title);
         event.longitude = event.location.coordinates[0];
         event.latitude = event.location.coordinates[1];
         res.status(200).json({event, admin});
@@ -132,6 +133,11 @@ const joinEvent = async(req, res) => {
         }
         catch (err) {
             return res.status(400).json({msg: "User already joined"});
+        }
+        await NotificationQuery.addNotification(req.user._id, "Event Joined", joined._id, event._id, "You joined event " + event.title);
+        const admins = await Admin.find({eventID: req.params.id, mode: {$ne: "Deleted"}});
+        for (let admin of admins) {
+            await NotificationQuery.addNotification(admin.userID, "User Joined", joined._id, event._id, "User " + req.user.name + " joined event " + event.title);
         }
         res.status(200).json(joined);
     }

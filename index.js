@@ -5,32 +5,11 @@ const socket = require('socket.io');
 const http = require('http');
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 
 const app = express();
 const server = http.createServer(app);
 
-
-const swaggerDefinition = {
-    openapi: '3.0.0',
-    info: {
-        title: 'Test API',
-        version: '1.0.0',
-    },
-    servers: [
-        {
-            url: 'http://localhost:3000',
-        },
-    ],
-};
-
-const options = {
-    swaggerDefinition,
-    apis: ['./components/routes/*.js', 'index.js'], // Point to this file
-};
-
-const swaggerSpec = swaggerJsdoc(options);
-
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 
 const mongoose = require('mongoose');

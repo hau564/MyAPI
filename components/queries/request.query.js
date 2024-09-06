@@ -18,9 +18,7 @@ async function createRequest(eventID, userIDs) {
             await userRequest.save();
         }
         const admins = await EventQuery.getAdmins(eventID);
-        for (let admin of admins) {
-            await NotificationQuery.addNotification(admin.userID, 'New Request', request._id);
-        }
+        
         return request;
     }
     catch (err) {
@@ -39,7 +37,6 @@ async function confirmRequest(requestID, userID, status) {
             throw new Error('Request already confirmed by user');
         }
         const request = await Request.findOne({_id: requestID});
-        console.log(request);
         if (!request) {
             throw new Error('Request not found');
         }
@@ -49,12 +46,14 @@ async function confirmRequest(requestID, userID, status) {
         userRequest.status = status;
         await userRequest.save();
         if (status === 'Accepted') {
-            const pendingRequests = await UserRequest.find({requestID: requestID, status: 'Pending'});
-            if (pendingRequests.length === 0) {
+            const pendingRequest = await UserRequest.findOne({requestID: requestID, status: 'Pending'});
+            if (!pendingRequest) {
                 request.status = 'Pending';
                 await request.save();
+                return true;
             }
         }
+        return false;
     }
     catch (err) {
         console.error(err);

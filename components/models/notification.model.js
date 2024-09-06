@@ -1,9 +1,10 @@
+const { content } = require('googleapis/build/src/apis/content');
 const mongoose = require('mongoose');
 
 const notificationSchema = new mongoose.Schema({
     type: {
         type: String,
-        enum: ["Event Created", "User Joined", "Invitation Sent", "Invitation Received", "New Request"],
+        enum: ["Event Created", "Event Joined", "User Joined", "Request Sent", "Request Created"],
         required: true
     },
     userID: {
@@ -18,6 +19,13 @@ const notificationSchema = new mongoose.Schema({
     target: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
+    },
+    eventID: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Event'
+    },
+    content: {
+        type: String,
     },
 });
 

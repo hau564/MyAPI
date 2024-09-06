@@ -6,8 +6,8 @@ const eventController = require('../controllers/event.controller');
 const { authenticate } = require('../services/authenticate.service.js');
 
 router.post('/create', authenticate, adminController.createEvent);
-router.post('/admin', authenticate, adminController.inviteAdmin);
-router.post('/invite', authenticate, adminController.inviteUser);
+// router.post('/admin', authenticate, adminController.inviteAdmin);
+// router.post('/invite', authenticate, adminController.inviteUser);
 router.post('/join/:id', authenticate, adminController.joinEvent);
 router.post('/approve/:id', authenticate, adminController.acceptRequest);
 

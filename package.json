@@ -21,7 +21,8 @@
     "nodemailer": "^6.9.14",
     "socket.io": "^4.7.5",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "yamljs": "^0.3.0"
   },
   "devDependencies": {
     "dotenv": "^16.4.5",

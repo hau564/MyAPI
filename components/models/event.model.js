@@ -1,12 +1,16 @@
 const mongoose = require('mongoose');
 
 const eventSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
     description: {
         type: String
     },
     start: {
         type: Date,
-        // required: true
+        required: true
     },
     duration: {
         type: Number,
@@ -23,7 +27,7 @@ const eventSchema = new mongoose.Schema({
     joinMode: {
         type: String,
         enum: ["Everyone", "Accepted Only", "Invited Only"],
-        // required: true
+        required: true
     },
     maxParticipants: {
         type: Number,

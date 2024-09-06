@@ -1,11 +1,13 @@
 const Notification = require('../models/notification.model');
 
-async function addNotification(userID, type, target) {
+async function addNotification(userID, type, target, eventID, content) {
     try {
         const notification = new Notification({
             userID: userID,
             type: type,
-            target: target
+            target: target,
+            eventID: eventID,
+            content: content
         });
         await notification.save();
         return notification;
