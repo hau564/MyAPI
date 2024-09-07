@@ -1,9 +1,11 @@
 const { admin } = require('googleapis/build/src/apis/admin');
+const User = require('../models/user.model');
 const Event = require('../models/event.model');
 const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
 const Request = require('../models/request.model');
 const Invitation = require('../models/invitation.model');
+const UserRequest = require('../models/userRequest.model');
 
 const EventQuery = require('../queries/event.query');
 const NotificationQuery = require('../queries/notification.query');
@@ -152,11 +154,8 @@ const joinEvent = async(req, res) => {
 const acceptRequest = async(req, res) => {
     try {
         const request = await Request.findOne({_id: req.params.id});
-        if (!request) {
+        if (!request || request.status == "Waiting") {
             return res.status(404).json({msg: "Request not found"});
-        }
-        if (request.status == "Waiting") {
-            return res.status(403).json({msg: "Request not found"});
         }
         if (request.status !== "Pending") {
             return res.status(403).json({msg: "Request already processed"});
@@ -165,7 +164,28 @@ const acceptRequest = async(req, res) => {
         if (!admin || admin.mode == "Deleted") {
             return res.status(403).json({msg: "Only admins can accept requests"});
         }
+        
+        const userRequests = await UserRequest.find({requestID: request._id});
         await EventQuery.acceptRequest(request);
+        
+        const event = await Event.findOne({_id: request.eventID});
+        for (let userRequest of userRequests) {
+            await NotificationQuery.addNotification(userRequest.userID, "Request Accepted", request._id, request.eventID, "Your request to join event " + event.title + " has been accepted");
+        }
+        const user = await User.findOne({_id: userRequests[0].userID});
+        const users = user.name;
+        if (userRequests.length > 1) {
+            users += " and " + (userRequests.length - 1) + " other";
+            if (userRequests.length > 2) {
+                users += "s";
+            }
+        }
+        await NotificationQuery.addNotification(admin.userID, "Accepted Request", request._id, request.eventID, "Request from " + users + " to join " + event.title + " has been accepted");
+        const owner = await Admin.findOne({eventID: request.eventID, mode: "Create"});
+        if (owner.userID.toString() != admin.userID.toString()) {
+            await NotificationQuery.addNotification(owner.userID, "Accepted Request", request._id, request.eventID, "Request from " + users + " to join " + event.title + " has been accepted");
+        }
+
         res.status(200).json({msg: "Request accepted"});
     }
     catch (err) {

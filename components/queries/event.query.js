@@ -79,8 +79,8 @@ async function acceptRequest(request) {
         });
         await joined.save();
     }
-    await Request.deleteOne({_id: request._id});
-    await UserRequest.deleteMany({requestID: request._id});
+    request.status = "Accepted";
+    await request.save();
 }
 
 async function getAdmins(eventID) {
