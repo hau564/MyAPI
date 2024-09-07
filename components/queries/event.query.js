@@ -83,6 +83,11 @@ async function acceptRequest(request) {
     await request.save();
 }
 
+async function rejectRequest(request) {
+    request.status = "Rejected";
+    await request.save();
+}
+
 async function getAdmins(eventID) {
     const admins = await Admin.find({eventID: eventID, mode: {$in: ['Create', 'Edit', 'Invite']}});
     return admins;
@@ -92,5 +97,6 @@ module.exports = {
     countJoined,
     getJoinedEvents,
     acceptRequest,
-    getAdmins
+    getAdmins,
+    rejectRequest
 };
