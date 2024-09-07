@@ -110,7 +110,7 @@ const requestJoin = async (req, res) => {
             res.status(200).json(request);
         }
         catch (err) {
-            await session.abortTransaction();
+            // await session.abortTransaction();
             res.status(400).json({error: err.message, msg: 'Failed to request join event'});
             console.log(err.message);
         }
