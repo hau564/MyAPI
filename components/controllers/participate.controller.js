@@ -184,6 +184,21 @@ const getRequestInfo = async (req, res) => {
     }
 }
 
+const leaveEvent = async (req, res) => {
+    try {
+        const joined = await Joined.findOne({eventID: req.params.id, userID: req.user._id});
+        if (!joined) {
+            return res.status(404).json({msg: 'User not joined event'});
+        }
+        await Joined.deleteOne({_id: joined._id});
+        res.status(200).json({msg: 'User left event'});
+    }
+    catch (err) {
+        res.status(400).json({error: err.message, msg: 'Failed to leave event'});
+    }
+}
+
+
 module.exports = {
     acceptInvitation,  
     getInvitations,

@@ -10,6 +10,7 @@ async function addNotification(userID, type, target, eventID, content) {
             content: content
         });
         await notification.save();
+        global.io.to(global.users[userID]).emit('receiveNotification', notification);
         return notification;
     } catch (err) {
         console.error(err);
