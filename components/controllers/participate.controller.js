@@ -103,6 +103,10 @@ const requestJoin = async (req, res) => {
             const event = await Event.findById(request.eventID);
             if (requestSent) {
                 await NotificationQuery.addNotification(req.user._id, 'Request Sent', request._id, request.eventID, 'Your request to join the event ' + event.title + ' has been sent');
+                const admins = await Admin.find({eventID: request.eventID, mode: {$ne: "Deleted"}});
+                for (let admin of admins) {
+                    await NotificationQuery.addNotification(admin.userID, 'Request Received', request._id, request.eventID, 'A request to join the event ' + event.title + ' is waiting for your approval');
+                }
             }
             else {
                 await NotificationQuery.addNotification(req.user._id, 'Request Created', request._id, request.eventID, 'Your request to join the event ' + event.title + ' has been created. Waiting for other users to confirm');

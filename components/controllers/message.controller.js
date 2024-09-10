@@ -1,6 +1,7 @@
 const Message = require('../models/message.model');
 const User = require('../models/user.model');
 const Query = require('../queries/message.query');
+const NotificaitonQuery = require('../queries/notification.query');
 
 const send = async (req, res) => {
     try {
@@ -20,7 +21,8 @@ const send = async (req, res) => {
         await message.save();
 
         res.status(200).json(message);
-        
+
+        // NotificationQuery.createNotification(req.user._id, "Message Recieved", message._id, 'message');
         // console.log("A message sent!");
         global.io.to(global.users[receiver._id]).emit('receiveMessage', message);
     }
