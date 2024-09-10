@@ -160,6 +160,18 @@ const getAdmins = async (req, res) => {
     }
 }
 
+const getRequests = async (req, res) => {
+    try {
+    }
+    catch (err) {
+        res.status(500).json({ 
+            msg: "An error occurred while getting the requests",
+            error: err.message,
+        });
+        console.log(err);
+    }
+}
+
 module.exports = {
     searchEvent,
     isAdmin,

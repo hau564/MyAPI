@@ -98,6 +98,8 @@ const updateAvatar = async (req, res) => {
           return res.status(400).json({msg: 'No file uploaded'});
         }
 
+        // console.log(req.file);
+
         const params = {
           Bucket: process.env.AWS_S3_BUCKET_NAME,
           Key: req.user._id.toString(),
@@ -106,6 +108,9 @@ const updateAvatar = async (req, res) => {
         };
 
         const data = await s3.upload(params).promise();
+
+        req.user.avatarUrl = data.Key;
+        await req.user.save();
         
         res.status(200).send({
           msg: 'Avatar updated',
@@ -116,6 +121,24 @@ const updateAvatar = async (req, res) => {
         console.log(err);
       }
 };
+
+const getAvatar = async (req, res) => {
+    try {
+        if (!req.user) {
+            return res.status(404).json({msg: 'User not found'});
+        }
+        console.log(req.user);
+        const params = {
+            Bucket: process.env.AWS_S3_BUCKET_NAME,
+            Key: req.user.avatarUrl,
+        };
+        const data = await s3.getObject(params).promise();
+        res.status(200).send(data.Body);
+    } catch (err) {
+        res.status(500).send({error: err, msg: 'Failed to get avatar'});
+        console.log(err);
+    }
+}
 
 const forgotPassword = async (req, res) => {
     try {
@@ -164,6 +187,7 @@ module.exports = {
     confirm,
     update,
     updateAvatar,
+    getAvatar,
     forgotPassword,
     resetPassword
 };
