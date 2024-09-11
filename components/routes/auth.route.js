@@ -16,7 +16,7 @@ router.get('/profile', authenticate, (req, res) => {
 
 router.put('/profile', authenticate, authController.update);
 router.put('/profile/avatar', authenticate, upload.single('avatar'), authController.updateAvatar);
-router.get('/profile/avatar', authenticate, authController.getAvatar);
+router.get('/profile/avatar/:id', authController.getAvatar);
 
 router.post('/forgot-password', authController.forgotPassword)
 router.post('/reset-password/', authenticate, authController.resetPassword)

@@ -105,6 +105,7 @@ const updateAvatar = async (req, res) => {
           Key: req.user._id.toString(),
           Body: req.file.buffer,
           ContentType: req.file.mimetype,
+            ACL: 'public-read',
         };
 
         const data = await s3.upload(params).promise();
@@ -124,16 +125,13 @@ const updateAvatar = async (req, res) => {
 
 const getAvatar = async (req, res) => {
     try {
-        if (!req.user) {
-            return res.status(404).json({msg: 'User not found'});
-        }
-        console.log(req.user);
         const params = {
             Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: req.user.avatarUrl,
+            Key: req.params.id.toString(),
         };
         const data = await s3.getObject(params).promise();
-        res.status(200).send(data.Body);
+        // console.log(data);
+        res.status(200).send({url: 'https://'+process.env.AWS_S3_BUCKET_NAME+'.s3.'+process.env.AWS_REGION+'.amazonaws.com/'+req.params.id});
     } catch (err) {
         res.status(500).send({error: err, msg: 'Failed to get avatar'});
         console.log(err);
