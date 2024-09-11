@@ -98,7 +98,7 @@ const updateAvatar = async (req, res) => {
           return res.status(400).json({msg: 'No file uploaded'});
         }
 
-        // console.log(req.file);
+        console.log(req.file);
 
         const params = {
           Bucket: process.env.AWS_S3_BUCKET_NAME,
@@ -110,7 +110,7 @@ const updateAvatar = async (req, res) => {
 
         const data = await s3.upload(params).promise();
 
-        req.user.avatarUrl = 'https://'+process.env.AWS_S3_BUCKET_NAME+'.s3.'+process.env.AWS_REGION+'.amazonaws.com/'+req.params.id;
+        req.user.avatarUrl = data.Location;
         await req.user.save();
         
         res.status(200).send({
@@ -125,13 +125,13 @@ const updateAvatar = async (req, res) => {
 
 const getAvatar = async (req, res) => {
     try {
-        const params = {
-            Bucket: process.env.AWS_S3_BUCKET_NAME,
-            Key: req.params.id.toString(),
-        };
-        const data = await s3.getObject(params).promise();
+        // const params = {
+        //     Bucket: process.env.AWS_S3_BUCKET_NAME,
+        //     Key: req.params.id.toString(),
+        // };
+        // const data = await s3.getObject(params).promise();
         // console.log(data);
-        res.status(200).send({url: 'https://'+process.env.AWS_S3_BUCKET_NAME+'.s3.'+process.env.AWS_REGION+'.amazonaws.com/'+req.params.id});
+        res.status(200).send({url: 'https://s3.'+process.env.AWS_REGION+'.amazonaws.com/'+process.env.AWS_S3_BUCKET_NAME+'/'+req.params.id});
     } catch (err) {
         res.status(500).send({error: err, msg: 'Failed to get avatar'});
         console.log(err);
