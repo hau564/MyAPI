@@ -110,7 +110,7 @@ const updateAvatar = async (req, res) => {
 
         const data = await s3.upload(params).promise();
 
-        req.user.avatarUrl = data.Key;
+        req.user.avatarUrl = 'https://'+process.env.AWS_S3_BUCKET_NAME+'.s3.'+process.env.AWS_REGION+'.amazonaws.com/'+req.params.id;
         await req.user.save();
         
         res.status(200).send({

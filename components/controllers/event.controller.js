@@ -3,7 +3,8 @@ const Event = require('../models/event.model');
 const Admin = require('../models/admin.model');
 const Joined = require('../models/joined.model');
 const Invitation = require('../models/invitation.model');
-
+const Request = require('../models/request.model');
+const UserRequest = require('../models/userRequest.model'); 
 const EventQuery = require('../queries/event.query');
 
 const mongoose = require('mongoose');
@@ -162,6 +163,49 @@ const getAdmins = async (req, res) => {
 
 const getRequests = async (req, res) => {
     try {
+        const admin = await Admin.findOne({ eventID: req.params.id, userID: req.user._id });
+        if (!admin || admin.mode == "Deleted") {
+            return res.status(403).json({ msg: "Unauthorized to get requests" });
+        }
+        const requests = await Request.aggregate([
+            {
+                $match: { eventID: new mongoose.Types.ObjectId(req.params.id), status: "Pending" }
+            }
+        ]);
+        requestUsers = [];
+        for (let request of requests) {
+            const users = await UserRequest.aggregate(
+                [
+                    {
+                        $match: {requestID: request._id}
+                    },
+                    {
+                        $lookup: {
+                            from: 'users',
+                            localField: 'userID',
+                            foreignField: '_id',
+                            as: 'user'
+                        }
+                    },
+                    {
+                        $unwind: '$user'
+                    },
+                    {
+                        $project: {
+                            'user.password': 0,
+                            'user.email': 0,
+                            'user.__v': 0
+                        }
+                    },
+                    // reroot
+                    {
+                        $replaceRoot: {newRoot: '$user'}
+                    }
+                ]
+            );
+            requestUsers.push({ request, users });
+        }
+        res.status(200).json(requestUsers);
     }
     catch (err) {
         res.status(500).json({ 
@@ -178,5 +222,6 @@ module.exports = {
     getEvent,
     getParticipants,
     getRole,
-    getAdmins
+    getAdmins,
+    getRequests
 };

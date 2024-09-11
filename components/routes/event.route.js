@@ -17,6 +17,7 @@ router.get('/get/:id', eventController.getEvent);
 router.get('/get-participants/:id', authenticate, eventController.getParticipants);
 router.get('/get-role/:id', authenticate, eventController.getRole);
 router.get('/get-admins/:id', authenticate, eventController.getAdmins);
+router.get('/get-requests/:id', authenticate, eventController.getRequests);
 
 router.post('/invitation/accept/:id', authenticate, participateController.acceptInvitation);
 router.get('/invitations', authenticate, participateController.getInvitations);
