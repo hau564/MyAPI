@@ -58,6 +58,11 @@ io.on('connection', (socket) => {
         console.log('User registered:', userId);        
     });
 
+    socket.on('unregister', async (userId) => {
+        delete users[userId];
+        console.log('User unregistered:', userId);
+    });
+
     // Disconnect event
     socket.on('disconnect', () => {
         console.log('A user disconnected');
