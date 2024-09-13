@@ -8,17 +8,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const sendConfirmationEmail = (email, token) => {
+const sendConfirmationEmail = async (email, token) => {
   const url = process.env.ROOT_URL +`/auth/confirm/${token}`;
-  transporter.sendMail({
+  await transporter.sendMail({
     to: email,
     subject: 'Confirm Email',
     html: `Please click this link to confirm your email: <a href="${url}">${url}</a>`,
   });
 };
 
-const sendResetPasswordEmail = (email, password) => {
-  transporter.sendMail({
+const sendResetPasswordEmail = async (email, password) => {
+  await transporter.sendMail({
     to: email,
     subject: 'Reset Password',
     html: `Your new password is: ${password}\n\nPlease change it after login`,

@@ -92,9 +92,35 @@ const requestJoin = async (req, res) => {
             for (let i = 0; i < users.length; i++) {
                 if (users[i] == req.user._id) {
                     flag = true;
-                    break;
+                }
+                const joined = Joined.find({eventID: req.body.eventID, userID: users[i]});
+                if (joined) {
+                    return res.status(400).json({msg: 'User already joined event'});
+                }
+                const request = Request.aggregate([
+                    {
+                        $match: {eventID: req.body.eventID}
+                    },
+                    {
+                        $lookup: {
+                            from: 'userrequests',
+                            localField: '_id',
+                            foreignField: 'requestID',
+                            as: 'userRequests'
+                        }
+                    },
+                    {
+                        $unwind: '$userRequests'
+                    },
+                    {
+                        $match: {'userRequests.userID': users[i]}
+                    }
+                ]);
+                if (request) {
+                    return res.status(400).json({msg: 'User already requested to join event'});
                 }
             }
+
             if (!flag) {
                 return res.status(403).json({msg: 'Unauthorized to request join event'});
             }

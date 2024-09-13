@@ -14,7 +14,7 @@ const register = async (req, res) => {
         
         const user = new User(req.body);
         const token = jwt.sign({ id: user._id }, process.env.AUTH_KEY, { expiresIn: '1h' });
-        sendConfirmationEmail(email, token);
+        await sendConfirmationEmail(email, token);
         await user.save();
         res.status(201).json({msg: 'Confirmation email has been sent'});
     }
@@ -150,7 +150,7 @@ const forgotPassword = async (req, res) => {
         const newPassword = Math.random().toString(36).slice(-8);
         user.password = newPassword;
         await user.save();
-        sendResetPasswordEmail(email, newPassword);
+        await sendResetPasswordEmail(email, newPassword);
         res.status(200).json({msg: 'Password reset email has been sent'});
     }
     catch (err) {
