@@ -12,7 +12,7 @@ const register = async (req, res) => {
             return res.status(400).json({msg: 'User already exist'});
         }
         
-        const user = new User(req.body);
+        const user = new User({ email, password, avatarUrl: process.env.DEFAULT_AVATAR_URL });
         const token = jwt.sign({ id: user._id }, process.env.AUTH_KEY, { expiresIn: '1h' });
         await sendConfirmationEmail(email, token);
         await user.save();

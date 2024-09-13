@@ -35,7 +35,6 @@ const userSchema = new mongoose.Schema({
     },
     avatarUrl: {
         type: String,
-        default: process.env.DEFAULT_AVATAR
     }
 });
 
