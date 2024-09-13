@@ -131,7 +131,8 @@ const getAvatar = async (req, res) => {
         // };
         // const data = await s3.getObject(params).promise();
         // console.log(data);
-        res.status(200).send({url: 'https://s3.'+process.env.AWS_REGION+'.amazonaws.com/'+process.env.AWS_S3_BUCKET_NAME+'/'+req.params.id});
+        const user = await User.findById(req.params.id);
+        res.status(200).send({url: user.avatarUrl}); 
     } catch (err) {
         res.status(500).send({error: err, msg: 'Failed to get avatar'});
         console.log(err);

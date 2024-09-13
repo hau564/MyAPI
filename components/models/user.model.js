@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
+//env
+require('dotenv').config();
+
 const userSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -32,6 +35,7 @@ const userSchema = new mongoose.Schema({
     },
     avatarUrl: {
         type: String,
+        default: process.env.DEFAULT_AVATAR
     }
 });
 
