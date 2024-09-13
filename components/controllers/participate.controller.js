@@ -9,6 +9,7 @@ const EventQuery = require('../queries/event.query');
 const RequestQuery = require('../queries/request.query');
 const NotificationQuery = require('../queries/notification.query');
 
+const mongoose = require('mongoose');
 const { MongoClient } = require('mongodb');
 
 const acceptInvitation = async (req, res) => {
@@ -93,13 +94,17 @@ const requestJoin = async (req, res) => {
                 if (users[i] == req.user._id) {
                     flag = true;
                 }
-                const joined = Joined.find({eventID: req.body.eventID, userID: users[i]});
+                // check if user already joined
+                const joined = await Joined.findOne({event: req.body.eventID, userID: users[i]});
                 if (joined) {
+                    console.log(joined);
                     return res.status(400).json({msg: 'User already joined event'});
                 }
-                const request = Request.aggregate([
+
+                console.log(req.body.eventID);
+                const request = await Request.aggregate([
                     {
-                        $match: {eventID: req.body.eventID}
+                        $match: {eventID: new mongoose.Types.ObjectId(req.body.eventID)}
                     },
                     {
                         $lookup: {
@@ -113,10 +118,11 @@ const requestJoin = async (req, res) => {
                         $unwind: '$userRequests'
                     },
                     {
-                        $match: {'userRequests.userID': users[i]}
+                        $match: {'userRequests.userID': new mongoose.Types.ObjectId(users[i])}
                     }
                 ]);
-                if (request) {
+                if (request.length > 0) {
+                    console.log(request);
                     return res.status(400).json({msg: 'User already requested to join event'});
                 }
             }
@@ -126,6 +132,7 @@ const requestJoin = async (req, res) => {
             }
             const request = await RequestQuery.createRequest(req.body.eventID, users);        
             const requestSent = await RequestQuery.confirmRequest(request._id, req.user._id, 'Accepted');
+            const finalRequest = await Request.findOne({_id: request._id});
             const event = await Event.findById(request.eventID);
             if (requestSent) {
                 await NotificationQuery.addNotification(req.user._id, 'Request Sent', request._id, request.eventID, 'Your request to join the event ' + event.title + ' has been sent');
@@ -137,7 +144,7 @@ const requestJoin = async (req, res) => {
             else {
                 await NotificationQuery.addNotification(req.user._id, 'Request Created', request._id, request.eventID, 'Your request to join the event ' + event.title + ' has been created. Waiting for other users to confirm');
             }
-            res.status(200).json(request);
+            res.status(200).json(finalRequest);
         }
         catch (err) {
             // await session.abortTransaction();
